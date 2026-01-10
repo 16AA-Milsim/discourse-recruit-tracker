@@ -1,1 +1,23 @@
 en:
+  site_settings:
+    discourse_recruit_tracker_enabled: "Enable recruit tracker"
+    discourse_recruit_tracker_view_groups: "Groups allowed to view recruit tracking"
+    discourse_recruit_tracker_manage_groups: "Groups allowed to manage recruit tracking"
+    discourse_recruit_tracker_status_pending_label: "Label for Pending Recruit Training"
+    discourse_recruit_tracker_status_attended_label: "Label for Attended Recruit Training"
+    discourse_recruit_tracker_status_eligible_label: "Label for Eligible for Assessment"
+    discourse_recruit_tracker_status_promotion_label: "Label for Pending Promotion Decision"
+    discourse_recruit_tracker_discord_notifications_enabled: "Enable Discord notifications for status changes"
+    discourse_recruit_tracker_discord_webhook_url: "Discord webhook URL"
+    discourse_recruit_tracker_discord_webhook_username: "Discord webhook username"
+    discourse_recruit_tracker_discord_webhook_avatar_url: "Discord webhook avatar URL"
+    discourse_recruit_tracker_discord_server: "Discord server (reference only)"
+    discourse_recruit_tracker_discord_channel: "Discord channel (reference only)"
+  discourse_recruit_tracker:
+    errors:
+      invalid_status: "Select a valid recruit status."
+      note_blank: "Note cannot be blank."
+    status:
+      none: "No status set"
+    discord:
+      status_change: "%{actor} updated %{user}: %{previous} -> %{current}"

@@ -3,7 +3,32 @@ en:
     admin:
       site_settings:
         categories:
-          discourse_recruit_tracker: "Discourse Recruit Tracker"
+          discourse_recruit_tracker: "Recruit Tracker"
   js:
     discourse_recruit_tracker:
-      placeholder: placeholder
+      title: "Recruit Tracker"
+      nav_link: "Recruit Tracker"
+      overview:
+        subtitle: "Track recruit progress toward promotion."
+        empty_column: "No recruits in this stage."
+      panel:
+        title: "Recruit Tracking"
+      status:
+        label: "Current status"
+        update: "Update status"
+        save: "Save status"
+        none: "No status set"
+      notes:
+        title: "Notes"
+        empty: "No notes yet."
+        add: "Add a note"
+        save: "Save note"
+        pin_label: "Pin this note"
+        pin: "Pin"
+        unpin: "Unpin"
+        delete: "Delete"
+        confirm_delete: "Delete this note?"
+      history:
+        title: "Status history"
+        empty: "No status changes yet."
+        arrow: "->"

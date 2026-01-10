@@ -2,3 +2,37 @@ discourse_recruit_tracker:
   discourse_recruit_tracker_enabled:
     default: false
     client: true
+  discourse_recruit_tracker_view_groups:
+    type: group_list
+    list_type: compact
+    default: "3"
+    allow_any: false
+    refresh: true
+    client: true
+  discourse_recruit_tracker_manage_groups:
+    type: group_list
+    list_type: compact
+    default: "3"
+    allow_any: false
+    refresh: true
+  discourse_recruit_tracker_status_pending_label:
+    default: "Pending Recruit Training"
+  discourse_recruit_tracker_status_attended_label:
+    default: "Attended Recruit Training"
+  discourse_recruit_tracker_status_eligible_label:
+    default: "Eligible for Assessment"
+  discourse_recruit_tracker_status_promotion_label:
+    default: "Pending Promotion Decision"
+  discourse_recruit_tracker_discord_notifications_enabled:
+    default: false
+  discourse_recruit_tracker_discord_webhook_url:
+    default: ""
+    secret: true
+  discourse_recruit_tracker_discord_webhook_username:
+    default: ""
+  discourse_recruit_tracker_discord_webhook_avatar_url:
+    default: ""
+  discourse_recruit_tracker_discord_server:
+    default: ""
+  discourse_recruit_tracker_discord_channel:
+    default: ""

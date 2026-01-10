@@ -9,13 +9,37 @@
 # required_version: 2.7.0
 
 enabled_site_setting :discourse_recruit_tracker_enabled
+register_asset "stylesheets/common/discourse-recruit-tracker.scss"
 
 module ::DiscourseRecruitTracker
   PLUGIN_NAME = "discourse-recruit-tracker"
+  STATUS_FIELD = "discourse_recruit_tracker_status"
 end
 
 require_relative "lib/discourse_recruit_tracker/engine"
+require_relative "lib/discourse_recruit_tracker/access"
+require_relative "lib/discourse_recruit_tracker/status_config"
+require_relative "lib/discourse_recruit_tracker/discord_notifier"
+
+Discourse::Application.routes.append do
+  mount ::DiscourseRecruitTracker::Engine, at: "/recruit-tracker"
+end
 
 after_initialize do
-  # Code which should run after Rails has finished booting
+  register_user_custom_field_type(::DiscourseRecruitTracker::STATUS_FIELD, :string, max_length: 50)
+
+  require_relative "app/models/discourse_recruit_tracker/note"
+  require_relative "app/models/discourse_recruit_tracker/status_change"
+
+  require_relative "app/services/discourse_recruit_tracker/create_note"
+  require_relative "app/services/discourse_recruit_tracker/delete_note"
+  require_relative "app/services/discourse_recruit_tracker/update_note"
+  require_relative "app/services/discourse_recruit_tracker/update_status"
+
+  require_relative "app/jobs/regular/discourse_recruit_tracker/notify_discord"
+
+  require_relative "app/controllers/discourse_recruit_tracker/base_controller"
+  require_relative "app/controllers/discourse_recruit_tracker/overview_controller"
+  require_relative "app/controllers/discourse_recruit_tracker/notes_controller"
+  require_relative "app/controllers/discourse_recruit_tracker/users_controller"
 end

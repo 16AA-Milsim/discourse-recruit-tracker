@@ -1,0 +1,205 @@
+.recruit-tracker {
+  padding: 1.5rem 0 2rem;
+}
+
+.recruit-tracker__header {
+  margin-bottom: 1.5rem;
+}
+
+.recruit-tracker__title {
+  margin: 0 0 0.25rem;
+}
+
+.recruit-tracker__subtitle {
+  color: var(--primary-medium);
+  margin: 0;
+}
+
+.recruit-tracker__columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.recruit-tracker__column {
+  background: var(--primary-low);
+  border: 1px solid var(--primary-low-mid);
+  border-radius: 8px;
+  padding: 1rem;
+  min-height: 220px;
+}
+
+.recruit-tracker__column-title {
+  font-size: 1rem;
+  margin: 0 0 0.75rem;
+}
+
+.recruit-tracker__users {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.recruit-tracker__user {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--secondary);
+  border: 1px solid var(--primary-low-mid);
+  border-radius: 6px;
+  padding: 0.5rem 0.6rem;
+}
+
+.recruit-tracker__user-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.recruit-tracker__user-name {
+  font-weight: 600;
+}
+
+.recruit-tracker__user-handle {
+  color: var(--primary-medium);
+  font-size: 0.85rem;
+}
+
+.recruit-tracker__user-updated {
+  margin-left: auto;
+  color: var(--primary-medium);
+  font-size: 0.8rem;
+}
+
+.recruit-tracker__empty {
+  color: var(--primary-medium);
+  font-style: italic;
+  padding: 0.5rem 0;
+}
+
+.recruit-tracker-panel {
+  border: 1px solid var(--primary-low-mid);
+  border-radius: 8px;
+  padding: 1rem;
+  background: var(--secondary);
+  margin-top: 1rem;
+}
+
+.recruit-tracker-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.recruit-tracker-panel__title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.recruit-tracker-panel__section {
+  margin-bottom: 1.5rem;
+}
+
+.recruit-tracker-panel__status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.recruit-tracker-panel__status-label {
+  color: var(--primary-medium);
+  font-weight: 500;
+}
+
+.recruit-tracker-panel__form {
+  margin-top: 0.75rem;
+}
+
+.recruit-tracker-panel__section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.recruit-tracker-panel__notes,
+.recruit-tracker-panel__history {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.recruit-tracker-panel__note,
+.recruit-tracker-panel__history-entry {
+  border: 1px solid var(--primary-low-mid);
+  border-radius: 6px;
+  padding: 0.75rem;
+  background: var(--primary-very-low);
+}
+
+.recruit-tracker-panel__note-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.recruit-tracker-panel__note-user {
+  font-weight: 600;
+}
+
+.recruit-tracker-panel__note-date {
+  color: var(--primary-medium);
+  font-size: 0.8rem;
+}
+
+.recruit-tracker-panel__note-pinned {
+  margin-left: auto;
+  color: var(--primary-high);
+}
+
+.recruit-tracker-panel__note-body {
+  margin: 0 0 0.75rem;
+}
+
+.recruit-tracker-panel__note-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.recruit-tracker-panel__history-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.recruit-tracker-panel__history-date,
+.recruit-tracker-panel__history-user {
+  color: var(--primary-medium);
+  font-size: 0.8rem;
+}
+
+.recruit-tracker-panel__empty {
+  color: var(--primary-medium);
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 700px) {
+  .recruit-tracker__user {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .recruit-tracker__user-updated {
+    margin-left: 0;
+  }
+}
