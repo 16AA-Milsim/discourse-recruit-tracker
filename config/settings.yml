@@ -1,0 +1,4 @@
+discourse_recruit_tracker:
+  discourse_recruit_tracker_enabled:
+    default: false
+    client: true

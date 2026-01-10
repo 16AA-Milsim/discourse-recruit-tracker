@@ -1,0 +1,9 @@
+en:
+  admin_js:
+    admin:
+      site_settings:
+        categories:
+          discourse_recruit_tracker: "Discourse Recruit Tracker"
+  js:
+    discourse_recruit_tracker:
+      placeholder: placeholder
