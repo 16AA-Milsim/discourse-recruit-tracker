@@ -19,7 +19,12 @@ function canView(siteSettings, currentUser) {
     return false;
   }
 
-  const allowed = (siteSettings.discourse_recruit_tracker_view_groups || "")
+  const allowed = [
+    siteSettings.discourse_recruit_tracker_view_groups,
+    siteSettings.discourse_recruit_tracker_manage_groups,
+  ]
+    .filter(Boolean)
+    .join("|")
     .split("|")
     .map((id) => parseInt(id, 10))
     .filter((id) => Number.isInteger(id));
@@ -66,7 +71,7 @@ export default {
           }
 
           get prefixValue() {
-            return "clipboard-list";
+            return "list";
           }
 
           get shouldDisplay() {

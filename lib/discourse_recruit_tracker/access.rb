@@ -5,14 +5,22 @@ module DiscourseRecruitTracker
     extend self
 
     def can_view?(user)
-      group_allowed?(user, SiteSetting.discourse_recruit_tracker_view_groups_map)
+      group_allowed?(user, view_group_ids + manage_group_ids)
     end
 
     def can_manage?(user)
-      group_allowed?(user, SiteSetting.discourse_recruit_tracker_manage_groups_map)
+      group_allowed?(user, manage_group_ids)
     end
 
     private
+
+    def view_group_ids
+      SiteSetting.discourse_recruit_tracker_view_groups_map || []
+    end
+
+    def manage_group_ids
+      SiteSetting.discourse_recruit_tracker_manage_groups_map || []
+    end
 
     def group_allowed?(user, group_ids)
       return false if user.blank?

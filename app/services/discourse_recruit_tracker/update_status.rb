@@ -47,6 +47,9 @@ module DiscourseRecruitTracker
 
     def apply_status(user:, guardian:, params:)
       previous_status = user.custom_fields[DiscourseRecruitTracker::STATUS_FIELD]
+      if previous_status.blank? && recruit_group_member?(user)
+        previous_status = DiscourseRecruitTracker::StatusConfig::STATUS_KEYS.first
+      end
       new_status = params.status.presence
 
       if previous_status == new_status
@@ -71,6 +74,8 @@ module DiscourseRecruitTracker
           changed_by_id: guardian.user.id,
           previous_status: previous_status,
           new_status: new_status,
+          user_rank_prefix: rank_prefix_for(user),
+          changed_by_rank_prefix: rank_prefix_for(guardian.user),
         )
 
       context[:changed] = true
@@ -88,6 +93,7 @@ module DiscourseRecruitTracker
         previous_status: previous_status,
         new_status: status,
       )
+      DiscourseRecruitTracker::AuditLog.trim!
     end
 
     def notify_discord(guardian:, user:, previous_status:, status:, changed:)
@@ -99,6 +105,27 @@ module DiscourseRecruitTracker
         new_status: status,
         actor: guardian.user,
       )
+    end
+
+    def rank_prefix_for(user)
+      return nil unless rank_on_names_enabled?
+
+      ::DiscourseRankOnNames.prefix_for_user(user)
+    end
+
+    def recruit_group_member?(user)
+      GroupUser
+        .joins(:group)
+        .exists?(user_id: user.id, groups: { name: DiscourseRecruitTracker::RECRUIT_GROUP_NAME })
+    end
+
+    def rank_on_names_enabled?
+      return @rank_on_names_enabled unless @rank_on_names_enabled.nil?
+
+      @rank_on_names_enabled =
+        defined?(::DiscourseRankOnNames) &&
+          SiteSetting.respond_to?(:rank_on_names_enabled) &&
+          SiteSetting.rank_on_names_enabled
     end
   end
 end

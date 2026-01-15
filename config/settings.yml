@@ -22,7 +22,7 @@ discourse_recruit_tracker:
   discourse_recruit_tracker_status_eligible_label:
     default: "Eligible for Assessment"
   discourse_recruit_tracker_status_promotion_label:
-    default: "Pending Promotion Decision"
+    default: "Pending Promotion Review"
   discourse_recruit_tracker_discord_notifications_enabled:
     default: false
   discourse_recruit_tracker_discord_webhook_url:
@@ -32,6 +32,8 @@ discourse_recruit_tracker:
     default: ""
   discourse_recruit_tracker_discord_webhook_avatar_url:
     default: ""
+  discourse_recruit_tracker_discord_message_template:
+    default: "%{actor} updated %{user}: %{previous} -> %{current}"
   discourse_recruit_tracker_discord_server:
     default: ""
   discourse_recruit_tracker_discord_channel:

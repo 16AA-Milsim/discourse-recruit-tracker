@@ -29,14 +29,7 @@ module Jobs
       previous_label = status_label(previous_status)
       new_label = status_label(new_status)
 
-      content =
-        I18n.t(
-          "discourse_recruit_tracker.discord.status_change",
-          user: user.username,
-          actor: actor.username,
-          previous: previous_label,
-          current: new_label,
-        )
+      content = build_message(actor, user, previous_label, new_label)
 
       payload = { content: content }
 
@@ -47,6 +40,27 @@ module Jobs
       payload[:avatar_url] = avatar_url if avatar_url
 
       payload
+    end
+
+    def build_message(actor, user, previous_label, new_label)
+      template = SiteSetting.discourse_recruit_tracker_discord_message_template
+      template = template.presence || I18n.t("discourse_recruit_tracker.discord.status_change")
+
+      I18n.interpolate(
+        template,
+        actor: actor.username,
+        user: user.username,
+        previous: previous_label,
+        current: new_label,
+      )
+    rescue I18n::MissingInterpolationArgument
+      I18n.t(
+        "discourse_recruit_tracker.discord.status_change",
+        user: user.username,
+        actor: actor.username,
+        previous: previous_label,
+        current: new_label,
+      )
     end
 
     def status_label(status)

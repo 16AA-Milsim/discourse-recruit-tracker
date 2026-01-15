@@ -35,10 +35,6 @@ module DiscourseRecruitTracker
       SiteSetting.public_send(setting).presence || DEFAULT_LABELS[key]
     end
 
-    def self.status_options
-      STATUS_KEYS.map { |key| { id: key, name: label_for(key) } }
-    end
-
     def self.columns_for(users_by_status)
       STATUS_KEYS.map do |key|
         {

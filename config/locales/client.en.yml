@@ -11,24 +11,28 @@ en:
       overview:
         subtitle: "Track recruit progress toward promotion."
         empty_column: "No recruits in this stage."
-      panel:
-        title: "Recruit Tracking"
+      join_date:
+        value: "Join date: {{date}}"
+        unknown: "Join date: missing"
+      audit:
+        title: "Audit log"
+        subtitle: "Latest 20 entries."
+        full_subtitle: "Showing the latest 500 entries, newest at the top."
+        toggle_hint: "Click to expand."
+        view_full: "View full audit log"
+        back: "Back to Recruit Tracker"
+        empty: "No entries recorded yet."
+        by: "by"
       status:
-        label: "Current status"
-        update: "Update status"
-        save: "Save status"
-        none: "No status set"
+        move_left: "Move status left"
+        move_right: "Move status right"
+        move_to: "Move to {{status}}"
       notes:
         title: "Notes"
-        empty: "No notes yet."
-        add: "Add a note"
+        add: "Notes"
+        add_button: "Add notes"
         save: "Save note"
-        pin_label: "Pin this note"
-        pin: "Pin"
-        unpin: "Unpin"
-        delete: "Delete"
-        confirm_delete: "Delete this note?"
+        edit: "Edit notes"
+        cancel: "Cancel"
       history:
-        title: "Status history"
-        empty: "No status changes yet."
         arrow: "->"

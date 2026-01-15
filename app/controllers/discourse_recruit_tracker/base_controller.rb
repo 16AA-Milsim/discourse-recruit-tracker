@@ -20,5 +20,20 @@ module DiscourseRecruitTracker
     def ensure_can_manage!
       raise Discourse::NotFound unless DiscourseRecruitTracker::Access.can_manage?(current_user)
     end
+
+    def rank_on_names_enabled?
+      return @rank_on_names_enabled unless @rank_on_names_enabled.nil?
+
+      @rank_on_names_enabled =
+        defined?(::DiscourseRankOnNames) &&
+          SiteSetting.respond_to?(:rank_on_names_enabled) &&
+          SiteSetting.rank_on_names_enabled
+    end
+
+    def rank_prefix_for(user)
+      return nil unless rank_on_names_enabled?
+
+      ::DiscourseRankOnNames.prefix_for_user(user)
+    end
   end
 end

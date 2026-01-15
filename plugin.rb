@@ -14,10 +14,12 @@ register_asset "stylesheets/common/discourse-recruit-tracker.scss"
 module ::DiscourseRecruitTracker
   PLUGIN_NAME = "discourse-recruit-tracker"
   STATUS_FIELD = "discourse_recruit_tracker_status"
+  RECRUIT_GROUP_NAME = "Recruit"
 end
 
 require_relative "lib/discourse_recruit_tracker/engine"
 require_relative "lib/discourse_recruit_tracker/access"
+require_relative "lib/discourse_recruit_tracker/audit_log"
 require_relative "lib/discourse_recruit_tracker/status_config"
 require_relative "lib/discourse_recruit_tracker/discord_notifier"
 
@@ -32,8 +34,6 @@ after_initialize do
   require_relative "app/models/discourse_recruit_tracker/status_change"
 
   require_relative "app/services/discourse_recruit_tracker/create_note"
-  require_relative "app/services/discourse_recruit_tracker/delete_note"
-  require_relative "app/services/discourse_recruit_tracker/update_note"
   require_relative "app/services/discourse_recruit_tracker/update_status"
 
   require_relative "app/jobs/regular/discourse_recruit_tracker/notify_discord"
@@ -42,4 +42,14 @@ after_initialize do
   require_relative "app/controllers/discourse_recruit_tracker/overview_controller"
   require_relative "app/controllers/discourse_recruit_tracker/notes_controller"
   require_relative "app/controllers/discourse_recruit_tracker/users_controller"
+
+  on(:group_user_created) do |user, group|
+    next unless SiteSetting.discourse_recruit_tracker_enabled
+    next unless group&.name == ::DiscourseRecruitTracker::RECRUIT_GROUP_NAME
+    next if user.custom_fields[::DiscourseRecruitTracker::STATUS_FIELD].present?
+
+    user.custom_fields[::DiscourseRecruitTracker::STATUS_FIELD] =
+      ::DiscourseRecruitTracker::StatusConfig::STATUS_KEYS.first
+    user.save_custom_fields
+  end
 end

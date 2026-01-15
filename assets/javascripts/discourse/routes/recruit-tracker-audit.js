@@ -1,13 +1,13 @@
 import { service } from "@ember/service";
-import DiscourseRoute from "discourse/routes/discourse";
-import { ajax } from "discourse/lib/ajax";
-import { i18n } from "discourse-i18n";
 import moment from "moment";
+import { ajax } from "discourse/lib/ajax";
+import DiscourseRoute from "discourse/routes/discourse";
+import { i18n } from "discourse-i18n";
 
 /**
- * Route for the recruit tracker overview page.
+ * Route for the recruit tracker audit log page.
  */
-export default class RecruitTrackerRoute extends DiscourseRoute {
+export default class RecruitTrackerAuditRoute extends DiscourseRoute {
   @service router;
   @service siteSettings;
 
@@ -26,27 +26,13 @@ export default class RecruitTrackerRoute extends DiscourseRoute {
   }
 
   /**
-   * Loads the overview data from the API.
+   * Loads the audit log data from the API.
    *
    * @returns {Promise<Object>}
    */
   async model() {
-    const data = await ajax("/recruit-tracker/overview.json");
-    const joinDateFormat = "DD/MM/YYYY";
+    const data = await ajax("/recruit-tracker/audit.json");
     const auditDateFormat = "DD/MM/YYYY HH:mm";
-    const joinDateEnabled = data.join_date_enabled === true;
-
-    data.columns = (data.columns || []).map((column) => {
-      const users = (column.users || []).map((user) => {
-        const joinDate = joinDateEnabled && user.join_date && moment(user.join_date);
-        const joinDateDisplay =
-          joinDate && joinDate.isValid() ? joinDate.format(joinDateFormat) : null;
-
-        return { ...user, join_date_display: joinDateDisplay };
-      });
-
-      return { ...column, users };
-    });
 
     data.audit_log = (data.audit_log || []).map((entry) => {
       const auditDate = entry.created_at && moment(entry.created_at);
@@ -67,6 +53,6 @@ export default class RecruitTrackerRoute extends DiscourseRoute {
    * @returns {string}
    */
   titleToken() {
-    return i18n("discourse_recruit_tracker.title");
+    return i18n("discourse_recruit_tracker.audit.title");
   }
 }

@@ -11,12 +11,17 @@ en:
     discourse_recruit_tracker_discord_webhook_url: "Discord webhook URL"
     discourse_recruit_tracker_discord_webhook_username: "Discord webhook username"
     discourse_recruit_tracker_discord_webhook_avatar_url: "Discord webhook avatar URL"
+    discourse_recruit_tracker_discord_message_template: "Discord message template (sent only for Attended Recruit Training -> Eligible for Assessment; use %{actor}, %{user}, %{previous}, %{current})"
     discourse_recruit_tracker_discord_server: "Discord server (reference only)"
     discourse_recruit_tracker_discord_channel: "Discord channel (reference only)"
   discourse_recruit_tracker:
     errors:
       invalid_status: "Select a valid recruit status."
       note_blank: "Note cannot be blank."
+    audit:
+      note_created: "Notes added"
+      note_updated: "Notes updated"
+      note_cleared: "Notes cleared"
     status:
       none: "No status set"
     discord:
