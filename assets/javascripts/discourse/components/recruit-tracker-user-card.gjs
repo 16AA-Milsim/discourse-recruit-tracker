@@ -232,9 +232,7 @@ export default class RecruitTrackerUserCard extends Component {
                 <span class="recruit-tracker__user-note-label">
                   {{i18n "discourse_recruit_tracker.notes.title"}}:
                 </span>
-                <div class="recruit-tracker__user-note-text">
-                  {{@user.note}}
-                </div>
+                <div class="recruit-tracker__user-note-text">{{@user.note}}</div>
               </div>
             {{/if}}
           {{/if}}
