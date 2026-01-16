@@ -19,7 +19,7 @@ en:
         subtitle: "Latest 20 entries."
         full_subtitle: "Showing the latest 500 entries, newest at the top."
         toggle_hint: "Click to expand."
-        view_full: "View full audit log"
+        view_full: "View full audit log, max 500 entries."
         back: "Back to Recruit Tracker"
         empty: "No entries recorded yet."
         by: "by"
@@ -36,3 +36,12 @@ en:
         cancel: "Cancel"
       history:
         arrow: "->"
+      manual:
+        add_button: "Add member to tracker"
+        add_title: "Add member to tracker"
+        user_label: "User"
+        add_submit: "Add to tracker"
+        cancel: "Cancel"
+        remove_button: "Remove from tracker"
+        errors:
+          user_required: "Select a user."

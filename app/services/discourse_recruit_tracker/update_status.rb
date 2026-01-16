@@ -47,7 +47,7 @@ module DiscourseRecruitTracker
 
     def apply_status(user:, guardian:, params:)
       previous_status = user.custom_fields[DiscourseRecruitTracker::STATUS_FIELD]
-      if previous_status.blank? && recruit_group_member?(user)
+      if previous_status.blank? && (recruit_group_member?(user) || manual_tracker?(user))
         previous_status = DiscourseRecruitTracker::StatusConfig::STATUS_KEYS.first
       end
       new_status = params.status.presence
@@ -117,6 +117,10 @@ module DiscourseRecruitTracker
       GroupUser
         .joins(:group)
         .exists?(user_id: user.id, groups: { name: DiscourseRecruitTracker::RECRUIT_GROUP_NAME })
+    end
+
+    def manual_tracker?(user)
+      user.custom_fields[DiscourseRecruitTracker::MANUAL_FIELD].present?
     end
 
     def rank_on_names_enabled?

@@ -1,8 +1,10 @@
+import { action } from "@ember/object";
 import { service } from "@ember/service";
-import DiscourseRoute from "discourse/routes/discourse";
-import { ajax } from "discourse/lib/ajax";
-import { i18n } from "discourse-i18n";
 import moment from "moment";
+import { ajax } from "discourse/lib/ajax";
+import DiscourseRoute from "discourse/routes/discourse";
+import { i18n } from "discourse-i18n";
+import RecruitTrackerAddUserModal from "discourse/plugins/discourse-recruit-tracker/discourse/components/modal/recruit-tracker-add-user";
 
 /**
  * Route for the recruit tracker overview page.
@@ -10,6 +12,7 @@ import moment from "moment";
 export default class RecruitTrackerRoute extends DiscourseRoute {
   @service router;
   @service siteSettings;
+  @service modal;
 
   /**
    * Redirects if the plugin is disabled.
@@ -68,5 +71,18 @@ export default class RecruitTrackerRoute extends DiscourseRoute {
    */
   titleToken() {
     return i18n("discourse_recruit_tracker.title");
+  }
+
+  /**
+   * Opens the add-to-tracker modal.
+   *
+   * @returns {void}
+   */
+  @action
+  openAddUserModal() {
+    const allowedGroupNames = this.currentModel?.manual_allowed_groups || [];
+    this.modal.show(RecruitTrackerAddUserModal, {
+      model: { allowedGroupNames },
+    });
   }
 }

@@ -62,6 +62,14 @@ html[data-rt-scheme="dark"] .recruit-tracker {
   margin: 0;
 }
 
+.recruit-tracker__header-actions {
+  margin-top: 0.75rem;
+}
+
+.recruit-tracker__add-button.btn {
+  font-weight: 600;
+}
+
 .recruit-tracker__columns {
   display: flex;
   flex-direction: column;
@@ -237,9 +245,12 @@ html[data-rt-scheme="dark"] .recruit-tracker__column-list:nth-child(4) {
 
 .recruit-tracker__user-actions {
   margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
 }
 
-.recruit-tracker__note-button.btn {
+.recruit-tracker__action-button.btn {
   background: color-mix(
     in srgb,
     var(--rt-button-bg-color) calc(var(--rt-button-bg-alpha) * 100%),
@@ -255,9 +266,9 @@ html[data-rt-scheme="dark"] .recruit-tracker__column-list:nth-child(4) {
   font-weight: 600;
 }
 
-.recruit-tracker__note-button.btn:hover,
-.recruit-tracker__note-button.btn:focus,
-.recruit-tracker__note-button.btn:active {
+.recruit-tracker__action-button.btn:hover,
+.recruit-tracker__action-button.btn:focus,
+.recruit-tracker__action-button.btn:active {
   background: color-mix(
     in srgb,
     var(--rt-button-hover-color) calc(var(--rt-button-hover-alpha) * 100%),

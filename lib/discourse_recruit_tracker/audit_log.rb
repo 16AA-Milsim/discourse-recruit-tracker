@@ -8,6 +8,8 @@ module DiscourseRecruitTracker
       recruit_tracker_note_created
       recruit_tracker_note_updated
       recruit_tracker_note_cleared
+      recruit_tracker_manual_added
+      recruit_tracker_manual_removed
     ].freeze
 
     module_function

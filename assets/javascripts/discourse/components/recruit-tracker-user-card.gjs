@@ -44,6 +44,19 @@ export default class RecruitTrackerUserCard extends Component {
   }
 
   /**
+   * Returns whether the user can be removed from the tracker.
+   *
+   * @returns {boolean}
+   */
+  get canRemoveFromTracker() {
+    return (
+      this.args.canManage &&
+      Boolean(this.args.user?.manual_included) &&
+      !this.args.user?.recruit_member
+    );
+  }
+
+  /**
    * Returns the tooltip for moving left.
    *
    * @returns {string}
@@ -141,6 +154,23 @@ export default class RecruitTrackerUserCard extends Component {
     }
   }
 
+  /**
+   * Removes the user from the tracker.
+   *
+   * @returns {Promise<void>}
+   */
+  @action
+  async removeFromTracker() {
+    try {
+      await ajax(`/recruit-tracker/manual/${this.args.user.id}`, {
+        type: "DELETE",
+      });
+      this.router.refresh();
+    } catch (error) {
+      popupAjaxError(error);
+    }
+  }
+
   <template>
     <li class="recruit-tracker__user">
       <div class="recruit-tracker__user-meta">
@@ -196,23 +226,32 @@ export default class RecruitTrackerUserCard extends Component {
             </form.Actions>
           </Form>
         {{else}}
-          {{#if @user.note}}
-            <div class="recruit-tracker__user-note">
-              <span class="recruit-tracker__user-note-label">
-                {{i18n "discourse_recruit_tracker.notes.title"}}:
-              </span>
-              <span
-                class="recruit-tracker__user-note-text"
-              >{{@user.note}}</span>
-            </div>
+          {{#if @canManage}}
+            {{#if @user.note}}
+              <div class="recruit-tracker__user-note">
+                <span class="recruit-tracker__user-note-label">
+                  {{i18n "discourse_recruit_tracker.notes.title"}}:
+                </span>
+                <span
+                  class="recruit-tracker__user-note-text"
+                >{{@user.note}}</span>
+              </div>
+            {{/if}}
           {{/if}}
           {{#if @canManage}}
             <div class="recruit-tracker__user-actions">
               <DButton
                 @action={{this.startEdit}}
                 @label={{this.noteButtonLabelKey}}
-                class="btn-small recruit-tracker__note-button"
+                class="btn-small recruit-tracker__action-button"
               />
+              {{#if this.canRemoveFromTracker}}
+                <DButton
+                  @action={{this.removeFromTracker}}
+                  @label="discourse_recruit_tracker.manual.remove_button"
+                  class="btn-small recruit-tracker__action-button"
+                />
+              {{/if}}
             </div>
           {{/if}}
         {{/if}}

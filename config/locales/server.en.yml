@@ -3,6 +3,7 @@ en:
     discourse_recruit_tracker_enabled: "Enable recruit tracker"
     discourse_recruit_tracker_view_groups: "Groups allowed to view recruit tracking"
     discourse_recruit_tracker_manage_groups: "Groups allowed to manage recruit tracking"
+    discourse_recruit_tracker_manual_add_groups: "Groups required to manually add members to the tracker (leave blank to allow all)"
     discourse_recruit_tracker_status_pending_label: "Label for Pending Recruit Training"
     discourse_recruit_tracker_status_attended_label: "Label for Attended Recruit Training"
     discourse_recruit_tracker_status_eligible_label: "Label for Eligible for Assessment"
@@ -11,17 +12,24 @@ en:
     discourse_recruit_tracker_discord_webhook_url: "Discord webhook URL"
     discourse_recruit_tracker_discord_webhook_username: "Discord webhook username"
     discourse_recruit_tracker_discord_webhook_avatar_url: "Discord webhook avatar URL"
-    discourse_recruit_tracker_discord_message_template: "Discord message template (sent only for Attended Recruit Training -> Eligible for Assessment; use %{actor}, %{user}, %{previous}, %{current})"
+    discourse_recruit_tracker_discord_message_template: "Discord message template (sent only for Attended Recruit Training -> Eligible for Assessment; use %{actor}, %{user}, %{previous}, %{current}; supports Markdown like **bold**)"
     discourse_recruit_tracker_discord_server: "Discord server (reference only)"
     discourse_recruit_tracker_discord_channel: "Discord channel (reference only)"
   discourse_recruit_tracker:
     errors:
       invalid_status: "Select a valid recruit status."
       note_blank: "Note cannot be blank."
+      user_required: "Select a user."
+      manual_already_recruit: "This user is already tracked automatically as a recruit."
+      manual_not_tracked: "This user is not manually tracked."
+      manual_cannot_remove_recruit: "Recruits are tracked automatically and cannot be removed."
+      manual_group_required: "This user is not in an allowed group for manual tracking."
     audit:
       note_created: "Notes added"
       note_updated: "Notes updated"
       note_cleared: "Notes cleared"
+      manual_added: "Added to tracker"
+      manual_removed: "Removed from tracker"
     status:
       none: "No status set"
     discord:

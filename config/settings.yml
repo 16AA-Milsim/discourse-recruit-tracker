@@ -15,6 +15,12 @@ discourse_recruit_tracker:
     default: "3"
     allow_any: false
     refresh: true
+  discourse_recruit_tracker_manual_add_groups:
+    type: group_list
+    list_type: compact
+    default: ""
+    allow_any: false
+    refresh: true
   discourse_recruit_tracker_status_pending_label:
     default: "Pending Recruit Training"
   discourse_recruit_tracker_status_attended_label:

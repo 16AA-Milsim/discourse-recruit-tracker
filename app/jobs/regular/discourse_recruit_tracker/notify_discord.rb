@@ -49,7 +49,7 @@ module Jobs
       I18n.interpolate(
         template,
         actor: actor.username,
-        user: user.username,
+        user: display_name(user),
         previous: previous_label,
         current: new_label,
       )
@@ -66,7 +66,21 @@ module Jobs
     def status_label(status)
       return I18n.t("discourse_recruit_tracker.status.none") if status.blank?
 
-      DiscourseRecruitTracker::StatusConfig.label_for(status)
+      ::DiscourseRecruitTracker::StatusConfig.label_for(status)
+    end
+
+    def display_name(user)
+      return user.username unless rank_on_names_enabled?
+
+      prefix = ::DiscourseRankOnNames.prefix_for_user(user)
+      prefix.present? ? "#{prefix} #{user.username}" : user.username
+    end
+
+    def rank_on_names_enabled?
+      return false unless defined?(::DiscourseRankOnNames)
+      return false unless SiteSetting.respond_to?(:rank_on_names_enabled)
+
+      SiteSetting.rank_on_names_enabled
     end
   end
 end

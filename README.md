@@ -22,8 +22,9 @@ Status keys are fixed, but labels are configurable via site settings:
 - pending_promotion_decision
 
 Once a recruit is promoted, clear the status to remove them from the workflow.
-Only users in the `Recruit` group appear on the overview; recruits with no status
-default to "Pending Recruit Training" on the overview.
+Users in the `Recruit` group appear on the overview by default; staff can
+manually add non-recruit members for special cases. Recruits and manually added
+members with no status default to "Pending Recruit Training" on the overview.
 
 ## Permissions
 
@@ -41,7 +42,7 @@ Access is group-based and controlled by two site settings:
 ## UI locations
 
 - Overview: `/recruit-tracker` (columns for each status)
-- Overview cards show the recruit note, include a manager-only edit button, and offer left/right arrows to step status backward/forward.
+- Overview cards show the recruit note, include manager-only edit/remove buttons for manually tracked users, and offer left/right arrows to step status backward/forward.
 - Audit log: overview page (latest 20 entries, visible to manage groups only); full log at `/recruit-tracker/audit` (latest 500 entries).
 - Rank on Names integration: if `discourse-rank-on-names` is enabled, rank prefixes are shown with usernames.
 

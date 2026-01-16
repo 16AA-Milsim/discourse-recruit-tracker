@@ -1,5 +1,7 @@
 import { LinkTo } from "@ember/routing";
 import RouteTemplate from "ember-route-template";
+import DButton from "discourse/components/d-button";
+import routeAction from "discourse/helpers/route-action";
 import { i18n } from "discourse-i18n";
 import RecruitTrackerUserCard from "discourse/plugins/discourse-recruit-tracker/discourse/components/recruit-tracker-user-card";
 
@@ -14,6 +16,15 @@ export default RouteTemplate(
           <p class="recruit-tracker__subtitle">
             {{i18n "discourse_recruit_tracker.overview.subtitle"}}
           </p>
+          {{#if @model.can_manage}}
+            <div class="recruit-tracker__header-actions">
+              <DButton
+                @action={{routeAction "openAddUserModal"}}
+                @label="discourse_recruit_tracker.manual.add_button"
+                class="btn-primary recruit-tracker__add-button"
+              />
+            </div>
+          {{/if}}
         </header>
 
         <div class="recruit-tracker__columns">

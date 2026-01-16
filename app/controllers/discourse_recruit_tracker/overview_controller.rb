@@ -17,14 +17,15 @@ module DiscourseRecruitTracker
       join_date_enabled = join_date_enabled?
       users = users_with_status(include_join_date: join_date_enabled)
       last_changes = last_changes_for(users)
-      notes = notes_by_user_id(users)
-      users_by_status = build_users_by_status(users, last_changes, join_date_enabled, notes)
       can_manage = DiscourseRecruitTracker::Access.can_manage?(current_user)
+      notes = can_manage ? notes_by_user_id(users) : {}
+      users_by_status = build_users_by_status(users, last_changes, join_date_enabled, notes)
 
       render_json_dump(
         columns: DiscourseRecruitTracker::StatusConfig.columns_for(users_by_status),
         can_manage: can_manage,
         join_date_enabled: join_date_enabled,
+        manual_allowed_groups: can_manage ? manual_allowed_group_names : [],
         audit_log:
           can_manage ? audit_log_entries(limit: DiscourseRecruitTracker::AuditLog::OVERVIEW_LIMIT) : [],
       )
@@ -40,15 +41,29 @@ module DiscourseRecruitTracker
 
     def users_with_status(include_join_date:)
       status_field = ActiveRecord::Base.connection.quote(DiscourseRecruitTracker::STATUS_FIELD)
+      manual_field = ActiveRecord::Base.connection.quote(DiscourseRecruitTracker::MANUAL_FIELD)
+      group_id = recruit_group_id
       scope =
         User
-          .joins(group_users: :group)
           .joins(
             "LEFT JOIN user_custom_fields status_fields " \
             "ON status_fields.user_id = users.id " \
             "AND status_fields.name = #{status_field}",
           )
-          .where(groups: { name: recruit_group_name })
+          .joins(
+            "LEFT JOIN user_custom_fields manual_fields " \
+            "ON manual_fields.user_id = users.id " \
+            "AND manual_fields.name = #{manual_field}",
+          )
+          .joins(
+            "LEFT JOIN group_users recruit_group_users " \
+            "ON recruit_group_users.user_id = users.id " \
+            "AND recruit_group_users.group_id = #{group_id || -1}",
+          )
+          .where(
+            "recruit_group_users.user_id IS NOT NULL " \
+            "OR manual_fields.value IS NOT NULL",
+          )
           .where(
             "status_fields.value IS NULL OR status_fields.value IN (?)",
             DiscourseRecruitTracker::StatusConfig::STATUS_KEYS,
@@ -68,13 +83,17 @@ module DiscourseRecruitTracker
             .select(
               "users.id, users.username, users.name, users.title, users.uploaded_avatar_id, users.created_at, " \
               "status_fields.value AS recruit_status, " \
+              "manual_fields.value AS manual_tracker, " \
+              "recruit_group_users.user_id AS recruit_member_id, " \
               "join_dates.value AS join_date",
             )
       else
         scope =
           scope.select(
             "users.id, users.username, users.name, users.title, users.uploaded_avatar_id, users.created_at, " \
-            "status_fields.value AS recruit_status",
+            "status_fields.value AS recruit_status, " \
+            "manual_fields.value AS manual_tracker, " \
+            "recruit_group_users.user_id AS recruit_member_id",
           )
       end
 
@@ -100,6 +119,8 @@ module DiscourseRecruitTracker
         parsed_join_date = parse_join_date(join_date)
         note = notes_by_user_id[user.id]
         status_neighbors = status_neighbors(status)
+        manual_included = user.read_attribute(:manual_tracker).present?
+        recruit_member = user.read_attribute(:recruit_member_id).present?
 
         data = serialize_user(user).merge(
           status: status,
@@ -111,6 +132,8 @@ module DiscourseRecruitTracker
           next_status: status_neighbors[:next],
           previous_label: status_neighbors[:previous_label],
           next_label: status_neighbors[:next_label],
+          manual_included: manual_included,
+          recruit_member: recruit_member,
         )
 
         users_by_status[status] << {
@@ -245,6 +268,17 @@ module DiscourseRecruitTracker
       DiscourseRecruitTracker::RECRUIT_GROUP_NAME
     end
 
+    def recruit_group_id
+      @recruit_group_id ||= Group.where(name: recruit_group_name).pick(:id)
+    end
+
+    def manual_allowed_group_names
+      group_ids = SiteSetting.discourse_recruit_tracker_manual_add_groups_map || []
+      return [] if group_ids.blank?
+
+      Group.where(id: group_ids).pluck(:name)
+    end
+
     def default_status_key
       DiscourseRecruitTracker::StatusConfig::STATUS_KEYS.first
     end
@@ -254,6 +288,8 @@ module DiscourseRecruitTracker
         recruit_tracker_note_created
         recruit_tracker_note_updated
         recruit_tracker_note_cleared
+        recruit_tracker_manual_added
+        recruit_tracker_manual_removed
       ]
     end
 
@@ -263,6 +299,10 @@ module DiscourseRecruitTracker
         I18n.t("discourse_recruit_tracker.audit.note_created")
       when "recruit_tracker_note_cleared"
         I18n.t("discourse_recruit_tracker.audit.note_cleared")
+      when "recruit_tracker_manual_added"
+        I18n.t("discourse_recruit_tracker.audit.manual_added")
+      when "recruit_tracker_manual_removed"
+        I18n.t("discourse_recruit_tracker.audit.manual_removed")
       else
         I18n.t("discourse_recruit_tracker.audit.note_updated")
       end
