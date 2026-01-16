@@ -236,7 +236,8 @@ html[data-rt-scheme="dark"] .recruit-tracker__column-list:nth-child(4) {
 }
 
 .recruit-tracker__user-note-text {
-  display: inline;
+  display: block;
+  white-space: pre-wrap;
 }
 
 .recruit-tracker__note-form {
